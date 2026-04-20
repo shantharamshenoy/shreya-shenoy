@@ -11,7 +11,7 @@ export function Nav() {
         <nav className="hidden gap-8 text-sm text-muted-foreground md:flex">
           <a href="#work" className="transition hover:text-foreground">Work</a>
           <a href="#about" className="transition hover:text-foreground">About</a>
-          <a href="#case-studies" className="transition hover:text-foreground">Case Studies</a>
+          {/* <a href="#case-studies" className="transition hover:text-foreground">Case Studies</a> */}
           <a href="#contact" className="transition hover:text-foreground">Contact</a>
         </nav>
         <a

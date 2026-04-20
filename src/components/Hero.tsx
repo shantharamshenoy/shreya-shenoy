@@ -116,11 +116,27 @@ export function Hero() {
           transition={{ duration: 1, delay: 0.4 }}
           className="relative flex items-center justify-center pb-16"
         >
-          <div className="absolute inset-0 scale-110 rounded-full bg-gradient-primary opacity-30 blur-3xl" />
+          {/* Pulsing golden glow */}
+          <motion.div
+            animate={{
+              opacity: [0.2, 0.5, 0.2],
+              scale: [1, 1.08, 1],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute inset-0 scale-110 rounded-full blur-3xl"
+            style={{ background: "radial-gradient(circle, #c9a84c, #a0722a, transparent 70%)" }}
+          />
+
           <div className="relative h-[340px] w-[340px] overflow-hidden rounded-full border border-primary/40 shadow-glow lg:h-[420px] lg:w-[420px]">
-            <img src="/images/shreya.jpg"
+            <img
+              src="/images/shreya.jpg"
               alt="Shreya R Shenoy — Creative Designer"
-              className="h-full w-full object-cover" />
+              className="h-full w-full object-cover"
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
           </div>
 
