@@ -1,6 +1,6 @@
 export function Contact() {
   return (
-    <section id="contact" className="relative px-6 py-24 lg:px-12 lg:py-40">
+    <section id="contact" className="relative overflow-hidden px-6 py-24 lg:px-12 lg:py-40">
       <div
         className="pointer-events-none absolute inset-0"
         style={{ background: "var(--gradient-radial)" }}

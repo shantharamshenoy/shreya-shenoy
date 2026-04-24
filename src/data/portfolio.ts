@@ -79,7 +79,7 @@ export const categories: Category[] = [
     description:
       "Where the work meets the thinking. Case studies, perspectives, and everything in between.",
     pieces: 5,
-    accent: "from-[oklch(0.6_0.22_310)] to-[oklch(0.4_0.16_280)]",
+    accent: "from-[oklch(0.45_0.18_295)] to-[oklch(0.3_0.12_310)]",
     subcategories: [
       {
         title: "Customer Care Case Study",
@@ -126,7 +126,7 @@ export const categories: Category[] = [
     description:
       "A collection of work spanning campaigns, print, and digital communication, built to present information clearly and effectively across different formats and audiences.",
     pieces: 19,
-    accent: "from-[oklch(0.6_0.22_310)] to-[oklch(0.4_0.16_280)]",
+    accent: "from-[oklch(0.45_0.18_295)] to-[oklch(0.3_0.12_310)]",
     subcategories: [
       {
         title: "Social Media",
@@ -166,7 +166,7 @@ export const categories: Category[] = [
     description:
       "A collection of UX case studies and product screens I've worked on, each one starting with a real problem and ending with something people actually enjoy using. I care about systems that make sense and interfaces that don't get in the way.",
     pieces: 12,
-    accent: "from-[oklch(0.55_0.2_285)] to-[oklch(0.4_0.18_320)]",
+    accent: "from-[oklch(0.45_0.18_295)] to-[oklch(0.3_0.12_310)]",
     subcategories: [
       {
         title: "Multiple Impressions - UI/UX Case Study",

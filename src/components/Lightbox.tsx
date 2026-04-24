@@ -60,6 +60,7 @@ export function Lightbox({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          onClick={onClose}
         >
           <button
             onClick={onClose}
@@ -130,6 +131,7 @@ export function Lightbox({
             exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.2 }}
             className="mx-auto flex max-h-full w-full max-w-6xl flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="flex max-h-[82vh] w-full items-center justify-center overflow-hidden rounded-2xl">
               <img

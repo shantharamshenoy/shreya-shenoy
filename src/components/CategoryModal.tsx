@@ -40,6 +40,7 @@ export function CategoryModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[80] overflow-y-auto bg-background/95 backdrop-blur-2xl"
+            onClick={onClose}
           >
             <motion.div
               initial={{ y: 60, opacity: 0 }}
@@ -47,6 +48,7 @@ export function CategoryModal({
               exit={{ y: 60, opacity: 0 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className="relative mx-auto max-w-6xl px-6 py-16 lg:px-12 lg:py-24"
+              onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={onClose}

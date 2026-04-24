@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { categories, type Category } from "@/data/portfolio";
 import { CategoryModal } from "./CategoryModal";
 import { useMemo } from "react";
+import { Lightbox } from "./Lightbox";
 
 function StackCard({
   category,
@@ -16,70 +17,54 @@ function StackCard({
   onOpen: () => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [lightbox, setLightbox] = useState<{ items: { src: string; title: string }[]; index: number } | null>(null);
+  
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
 
-  // Each card scales down slightly as the next stacks on top
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1 - (total - index - 1) * 0.04]);
   const opacity = useTransform(scrollYProgress, [0.6, 1], [1, 0.4]);
 
-  const topOffset = 80 + index * 24; // px
+  const topOffset = 80 + index * 24;
+
+  // All images across all subcategories flattened
+  const allCategoryItems = useMemo(() => 
+    category.subcategories.flatMap((s) => s.items),
+    [category]
+  );
 
   const previewItems = useMemo(() => {
-  const subs = category.subcategories;
-
-  // Flatten all items
-  const allItems = subs.flatMap((s) => s.items);
-
-  // If total ≤ 4 → return all
-  if (allItems.length <= 4) return allItems;
-
-  const result: typeof allItems = [];
-
-  if (subs.length === 1) {
-    return subs[0].items.slice(0, 4);
-  }
-
-  if (subs.length === 2) {
-    subs.forEach((s) => {
-      result.push(...s.items.slice(0, 2));
-    });
-    return result.slice(0, 4);
-  }
-
-  if (subs.length === 3) {
-    result.push(...subs[0].items.slice(0, 2));
-    result.push(...subs[1].items.slice(0, 1));
-    result.push(...subs[2].items.slice(0, 1));
-    return result.slice(0, 4);
-  }
-
-  // 4 or more subcategories → 1 from each (max 4)
-  subs.slice(0, 4).forEach((s) => {
-    if (s.items.length > 0) {
-      result.push(s.items[0]);
+    const subs = category.subcategories;
+    const allItems = subs.flatMap((s) => s.items);
+    if (allItems.length <= 4) return allItems;
+    const result: typeof allItems = [];
+    if (subs.length === 1) return subs[0].items.slice(0, 4);
+    if (subs.length === 2) {
+      subs.forEach((s) => result.push(...s.items.slice(0, 2)));
+      return result.slice(0, 4);
     }
-  });
-
-  return result;
-}, [category.id]);
+    if (subs.length === 3) {
+      result.push(...subs[0].items.slice(0, 2));
+      result.push(...subs[1].items.slice(0, 1));
+      result.push(...subs[2].items.slice(0, 1));
+      return result.slice(0, 4);
+    }
+    subs.slice(0, 4).forEach((s) => {
+      if (s.items.length > 0) result.push(s.items[0]);
+    });
+    return result;
+  }, [category.id]);
 
   return (
     <div ref={ref} className="relative" style={{ top: `${topOffset}px` }}>
-      <motion.div
-        style={{ scale, opacity }}
-        className="mx-auto mb-8 max-w-6xl"
-      >
+      <motion.div style={{ scale }} className="mx-auto mb-8 max-w-6xl">
         <div
-          className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${category.accent} p-10 shadow-elevated lg:p-16`}
+          className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[oklch(0.45_0.18_295)] to-[oklch(0.3_0.12_310)] p-10 shadow-elevated lg:p-16"
           style={{ minHeight: "auto" }}
         >
-          {/* Inner dark layer */}
           <div className="absolute inset-[1px] rounded-3xl bg-card/85 backdrop-blur-xl" />
-
-          {/* Glow */}
           <div className="glow-orb h-[400px] w-[400px] right-[-10%] top-[-10%] bg-primary/30" />
 
           <div className="relative z-10 flex h-full flex-col gap-10">
@@ -87,35 +72,19 @@ function StackCard({
               <div className="mb-6 font-display text-sm uppercase tracking-[0.3em] text-muted-foreground">
                 {category.number} / {String(total).padStart(2, "0")}
               </div>
-
               <h3 className="font-display text-5xl font-semibold leading-[1] tracking-tight lg:text-7xl">
                 <span className="text-gradient">{category.title}</span>
               </h3>
-
-              <p className="mt-6 text-xl text-foreground/80 lg:text-2xl">
-                {category.tagline}
-              </p>
-
+              <p className="mt-6 text-xl text-foreground/80 lg:text-2xl">{category.tagline}</p>
               <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted-foreground lg:text-lg">
                 {category.description}
               </p>
-
               <button
                 onClick={onOpen}
                 className="group mt-10 inline-flex items-center gap-3 rounded-full bg-gradient-primary px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-glow-soft transition hover:shadow-glow"
               >
                 Explore {category.pieces} pieces
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="transition group-hover:translate-x-1"
-                >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition group-hover:translate-x-1">
                   <path d="M5 12h14" />
                   <path d="m12 5 7 7-7 7" />
                 </svg>
@@ -123,24 +92,36 @@ function StackCard({
             </div>
 
             <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2">
-              {previewItems.map((item, i) => (
-                <div
-                  key={i}
-                  className="h-[240px] sm:h-[280px] lg:h-[320px] overflow-hidden rounded-3xl border border-white/10 bg-secondary"
-                >
-                  <img
-                    src={item.src}
-                    alt=""
-                    loading="lazy"
-                    onError={(e) => ((e.currentTarget as HTMLImageElement).style.opacity = "0.2")}
-                    className="h-full w-full object-cover transition duration-500 hover:scale-105"
-                  />
-                </div>
-              ))}
+              {previewItems.map((item, i) => {
+                // Find this item's index in the full category list
+                const globalIndex = allCategoryItems.findIndex((a) => a.src === item.src);
+                return (
+                  <button
+                    key={i}
+                    onClick={() => setLightbox({ items: allCategoryItems, index: globalIndex >= 0 ? globalIndex : 0 })}
+                    className="group relative  h-[240px] sm:h-[280px] lg:h-[320px] overflow-hidden rounded-3xl border border-white/10 bg-black"
+                  >
+                    <img
+                      src={item.src}
+                      alt={item.title}
+                      loading="lazy"
+                      onError={(e) => ((e.currentTarget as HTMLImageElement).style.opacity = "0.2")}
+                      className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
       </motion.div>
+
+      <Lightbox
+        items={lightbox?.items || []}
+        index={lightbox?.index ?? 0}
+        open={!!lightbox}
+        onClose={() => setLightbox(null)}
+      />
     </div>
   );
 }

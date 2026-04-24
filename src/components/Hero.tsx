@@ -4,12 +4,12 @@ export function Hero() {
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-24 lg:px-12 lg:py-16">
       {/* Glow orbs */}
-      <div className="glow-orb left-[-10%] top-[10%] h-[500px] w-[500px] bg-primary/30 animate-float-slow" />
+      <div className="glow-orb left-[-10%] top-[10%] h-[500px] w-[500px] bg-primary/30 animate-float-slow overflow-hidden" />
       <div
         className="glow-orb right-[-15%] top-[20%] h-[600px] w-[600px] bg-accent/25 animate-float-slow"
         style={{ animationDelay: "-4s" }}
       />
-      <div className="glow-orb left-[40%] bottom-[-10%] h-[400px] w-[400px] bg-primary-deep/40 animate-pulse-glow" />
+      <div className="glow-orb left-[40%] bottom-[0%] h-[400px] w-[400px] bg-primary-deep/20 animate-pulse-glow" />
 
       {/* Radial gradient overlay */}
       <div
